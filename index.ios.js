@@ -177,7 +177,6 @@ export default class Calculator extends Component {
       {
         return parseFloat(this.state.currentText).toExponential(1);
       }
-      return this.state.currentText
     }
     else if (numLengthOfCurrentText > 9)
     {

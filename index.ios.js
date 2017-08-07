@@ -152,13 +152,18 @@ export default class Calculator extends Component {
         if (this.state.operationSuccess)
         {
           this.setState({operationSuccess: false});
-          this.setState({previousText: this.state.currentText});
+          this.setState({previousText: buttonInput})
         }
 
         this.setState({currentText: buttonInput});
       }
       else 
       {
+        if (this.state.operationSuccess)
+        {
+          this.setState({previousText: this.state.currentText + buttonInput});
+        }
+
         this.setState({currentText: this.state.currentText + buttonInput});
       }  
     }

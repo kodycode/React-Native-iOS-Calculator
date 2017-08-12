@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 });
 
 const NUMBERLIMIT = 9;
-const DECIMALLIMIT = 2;
+const DECIMALLIMIT = 9;
 
 export default class Calculator extends Component {
   constructor(props) {
@@ -33,13 +33,17 @@ export default class Calculator extends Component {
   setOperation = (operation) => {
     if (operation === 'none' || this.state.currentOperation !== operation)
     {
-      this.setState({coproduct: 'none'});
-      this.setState({operationSuccess: false})
+      this.setState({
+        coproduct: 'none',
+        operationSuccess: false
+      });
     }
 
-    this.setState({currentOperation: operation});
-    this.setState({previousText: this.state.currentText});
-    this.setState({currentText: '0'});
+    this.setState({
+      currentOperation: operation,
+      previousText: this.state.currentText,
+      currentText: '0'
+    });
   }
 
   evaluate = () => {
@@ -87,18 +91,22 @@ export default class Calculator extends Component {
     
     if (this.state.currentOperation !== 'none')
     {
-      this.setState({operationSuccess: true});
-      this.setState({currentText: result});
-      this.setState({previousText: result});
+      this.setState({
+        operationSuccess: true,
+        currentText: result,
+        previousText: result
+      });
     }
   }
 
   allClear = () => {
-    this.setState({operationSuccess: false});
-    this.setState({currentOperation: 'none'});
-    this.setState({coproduct: 'none'});
-    this.setState({previousText: 'none'});
-    this.setState({currentText: '0'});
+    this.setState({
+      operationSuccess: false,
+      currentOperation: 'none',
+      coproduct: 'none',
+      previousText: 'none',
+      currentText: '0'
+    });
   }
 
   posOrNeg = () => {
@@ -106,6 +114,11 @@ export default class Calculator extends Component {
 
     result = 0 - parseFloat(this.state.currentText);
     this.setState({currentText: result});
+
+    if (this.state.operationSuccess)
+    {
+      this.setState({previousText: result});
+    }
   }
 
   convertToDecimal = () => {
@@ -144,17 +157,24 @@ export default class Calculator extends Component {
     {
       if (this.state.currentText === '0' || this.state.operationSuccess)
       {
-        this.setState({currentText: buttonInput});
-
         if (this.state.operationSuccess)
         {
-          this.setState({operationSuccess: false});
-          this.setState({previousText: buttonInput});
+          this.setState({
+            operationSuccess: false,
+            previousText: buttonInput
+          });
         }
+
+        this.setState({currentText: buttonInput});
       }
       else 
       {
-        this.setState({currentText: this.state.currentText + buttonInput})
+        if (this.state.operationSuccess)
+        {
+          this.setState({previousText: this.state.currentText + buttonInput});
+        }
+
+        this.setState({currentText: this.state.currentText + buttonInput});
       }  
     }
   }
@@ -164,7 +184,22 @@ export default class Calculator extends Component {
   }
 
   formatText = () => {
-    return parseFloat(this.state.currentText).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2});
+    var numLengthOfCurrentText = this.state.currentText.toString().replace(/\D/g,'').length;
+  
+    if (this.state.currentText.toString().indexOf('.') !== -1)
+    {
+      if (numLengthOfCurrentText > 9)
+      {
+        return parseFloat(this.state.currentText).toExponential(1);
+      }
+    }
+    else if (numLengthOfCurrentText > 9)
+    {
+      return parseInt(this.state.currentText).toExponential(1);
+    }
+    
+
+    return parseFloat(this.state.currentText).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 9});
   }
 
   render() {

@@ -33,13 +33,17 @@ export default class Calculator extends Component {
   setOperation = (operation) => {
     if (operation === 'none' || this.state.currentOperation !== operation)
     {
-      this.setState({coproduct: 'none'});
-      this.setState({operationSuccess: false});
+      this.setState({
+        coproduct: 'none',
+        operationSuccess: false
+      });
     }
 
-    this.setState({currentOperation: operation});
-    this.setState({previousText: this.state.currentText});
-    this.setState({currentText: '0'});
+    this.setState({
+      currentOperation: operation,
+      previousText: this.state.currentText,
+      currentText: '0'
+    });
   }
 
   evaluate = () => {
@@ -87,18 +91,22 @@ export default class Calculator extends Component {
     
     if (this.state.currentOperation !== 'none')
     {
-      this.setState({operationSuccess: true});
-      this.setState({currentText: result});
-      this.setState({previousText: result});
+      this.setState({
+        operationSuccess: true,
+        currentText: result,
+        previousText: result
+      });
     }
   }
 
   allClear = () => {
-    this.setState({operationSuccess: false});
-    this.setState({currentOperation: 'none'});
-    this.setState({coproduct: 'none'});
-    this.setState({previousText: 'none'});
-    this.setState({currentText: '0'});
+    this.setState({
+      operationSuccess: false,
+      currentOperation: 'none',
+      coproduct: 'none',
+      previousText: 'none',
+      currentText: '0'
+    });
   }
 
   posOrNeg = () => {
@@ -151,8 +159,10 @@ export default class Calculator extends Component {
       {
         if (this.state.operationSuccess)
         {
-          this.setState({operationSuccess: false});
-          this.setState({previousText: buttonInput})
+          this.setState({
+            operationSuccess: false,
+            previousText: buttonInput
+          });
         }
 
         this.setState({currentText: buttonInput});
